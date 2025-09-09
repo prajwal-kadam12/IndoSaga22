@@ -1,0 +1,40 @@
+[
+  {
+    "productId": "d9cde9f2-e534-4f10-b0cb-a1b13ecda271",
+    "uploadedAt": "2025-09-08T10:17:47.680Z",
+    "images": [
+      "/uploads/reviews/review_1757326667679_klceudgdx6j.jpeg"
+    ]
+  },
+  {
+    "productId": "32cd0660-19b7-4aef-a246-b61331e71a5c",
+    "uploadedAt": "2025-09-08T10:29:56.314Z",
+    "images": [
+      "/uploads/reviews/review_1757327396310_31q46i3opfu.jpeg",
+      "/uploads/reviews/review_1757327396312_dkca36i8ae4.jpeg",
+      "/uploads/reviews/review_1757327396313_62agr7grwpp.jpeg",
+      "/uploads/reviews/review_1757327396313_q2q85l56xmo.webp"
+    ]
+  },
+  {
+    "productId": "0a28e281-c3c2-4866-8ee7-ce71d396fc18",
+    "uploadedAt": "2025-09-09T09:39:18.356Z",
+    "images": [
+      "/uploads/reviews/review_1757410758348_xiwz1crk1h.png",
+      "/uploads/reviews/review_1757410758351_a62o8g2g3k.png",
+      "/uploads/reviews/review_1757410758352_ej4g0k7j1y7.png",
+      "/uploads/reviews/review_1757410758355_okg7brysp0r.png"
+    ]
+  },
+  {
+    "productId": "3f5edf87-e1a3-49a9-a9f2-183bc90b940d",
+    "uploadedAt": "2025-09-09T09:43:17.470Z",
+    "images": [
+      "/uploads/reviews/review_1757410997457_yr5npfrv0pj.png",
+      "/uploads/reviews/review_1757410997460_c79suvge6rm.png",
+      "/uploads/reviews/review_1757410997462_23rhokpzri8.png",
+      "/uploads/reviews/review_1757410997463_lsn7w1hok4s.png",
+      "/uploads/reviews/review_1757410997463_ih3q0oendxa.png"
+    ]
+  }
+]

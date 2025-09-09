@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagwan Furniture - Premium Teak Wood Furniture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#D2B48C',
+                        accent: '#CD853F',
+                        warmWhite: '#FAF7F2',
+                        beige: '#F5F5DC',
+                        darkBrown: '#2D1B0F'
+                    },
+                    fontFamily: {
+                        'display': ['Inter', 'sans-serif'],
+                        'body': ['Open Sans', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .wood-texture {
+            background: linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #D2B48C 100%);
+        }
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        .video-overlay {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.7) 0%, rgba(205, 133, 63, 0.5) 100%);
+        }
+    </style>
+</head>
+<body class="bg-warmWhite font-body scroll-smooth">
+
+<!-- @COMPONENT: App [main application wrapper] -->
+<div id="app" class="min-h-screen">
+
+    <!-- @COMPONENT: AuthPage [login/signup modal - shows first] -->
+    <div id="authPage" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 fade-in">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 wood-texture rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i class="fas fa-chair text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-display font-bold text-darkBrown">Sagwan Furniture</h1>
+                <p class="text-gray-600 mt-2">Premium Teak Wood Collection</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div id="loginForm">
+                    <h2 class="text-xl font-display font-semibold text-darkBrown mb-4">Welcome Back</h2>
+                    <form class="space-y-4">
+                        <div>
+                            <input type="email" placeholder="Email address" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Password" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <button type="submit" data-event="click:handleLogin" class="w-full wood-texture text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                            Sign In
+                        </button>
+                    </form>
+                    <p class="text-center mt-4 text-gray-600">
+                        Don't have an account? 
+                        <button class="text-primary font-semibold hover:underline" data-event="click:showSignup">Sign up</button>
+                    </p>
+                </div>
+                
+                <div id="signupForm" class="hidden">
+                    <h2 class="text-xl font-display font-semibold text-darkBrown mb-4">Create Account</h2>
+                    <form class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Full name" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email address" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Password" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <button type="submit" data-event="click:handleSignup" class="w-full wood-texture text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                            Create Account
+                        </button>
+                    </form>
+                    <p class="text-center mt-4 text-gray-600">
+                        Already have an account? 
+                        <button class="text-primary font-semibold hover:underline" data-event="click:showLogin">Sign in</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: AuthPage -->
+
+    <!-- @COMPONENT: Navigation [main navigation bar] -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center">
+                        <i class="fas fa-chair text-white"></i>
+                    </div>
+                    <h1 class="text-xl font-display font-bold text-darkBrown">Sagwan Furniture</h1>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-darkBrown hover:text-primary transition-colors font-medium nav-link">Home</a>
+                    <a href="#products" class="text-darkBrown hover:text-primary transition-colors font-medium nav-link">Products</a>
+                    <a href="#deal" class="text-darkBrown hover:text-primary transition-colors font-medium nav-link">₹1 Deal</a>
+                    <a href="#about" class="text-darkBrown hover:text-primary transition-colors font-medium nav-link">About</a>
+                    <a href="#contact" class="text-darkBrown hover:text-primary transition-colors font-medium nav-link">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-darkBrown hover:text-primary transition-colors" data-event="click:showWishlist">
+                        <i class="far fa-heart text-xl"></i>
+                        <span class="ml-1 text-sm" data-bind="wishlist.count">3</span>
+                    </button>
+                    <button class="text-darkBrown hover:text-primary transition-colors" data-event="click:showCart">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="ml-1 text-sm" data-bind="cart.count">2</span>
+                    </button>
+                    <button class="text-darkBrown hover:text-primary transition-colors" data-event="click:showProfile">
+                        <i class="far fa-user text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- @COMPONENT: HomePage [main landing page content] -->
+    <main id="home" class="bg-warmWhite">
+        <!-- Video Banner Section -->
+        <section class="relative h-screen flex items-center justify-center overflow-hidden">
+            <!-- Animated furniture showroom interior background -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080');">
+            </div>
+            <div class="absolute inset-0 video-overlay"></div>
+            
+            <div class="relative z-10 text-center text-white px-4 fade-in">
+                <h1 class="text-5xl md:text-7xl font-display font-bold mb-6">
+                    Premium <span class="text-secondary">Sagwan</span><br>Furniture
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+                    Discover the timeless beauty of handcrafted teak wood furniture that lasts generations
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-white text-darkBrown px-8 py-4 rounded-lg font-semibold hover:bg-opacity-90 transition-all hover-lift">
+                        Explore Collection
+                    </button>
+                    <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-darkBrown transition-all">
+                        Watch Our Story
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="py-20 bg-beige">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-4xl font-display font-bold text-darkBrown mb-4">Featured Collection</h2>
+                    <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+                        Handpicked pieces that showcase the natural beauty and durability of Sagwan wood
+                    </p>
+                </div>
+                
+                <!-- @MAP: featuredProducts.map(product => ( -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                        <!-- Elegant wooden dining chair with carved details -->
+                        <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Sagwan Dining Chair" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-6">
+                            <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Royal Dining Chair</h3>
+                            <p class="text-gray-600 mb-4" data-bind="product.description">Handcrafted with intricate carvings</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary" data-bind="product.price">₹15,999</span>
+                                <div class="flex space-x-2">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                        Add to Cart
+                                    </button>
+                                    <button class="wood-texture text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                        <!-- Beautiful wooden coffee table with natural grain -->
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Sagwan Coffee Table" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-6">
+                            <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Artisan Coffee Table</h3>
+                            <p class="text-gray-600 mb-4" data-bind="product.description">Natural edge design with glass top</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary" data-bind="product.price">₹25,999</span>
+                                <div class="flex space-x-2">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                        Add to Cart
+                                    </button>
+                                    <button class="wood-texture text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                        <!-- Luxurious wooden wardrobe with mirror -->
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Sagwan Wardrobe" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-6">
+                            <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Heritage Wardrobe</h3>
+                            <p class="text-gray-600 mb-4" data-bind="product.description">Traditional design with modern functionality</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary" data-bind="product.price">₹65,999</span>
+                                <div class="flex space-x-2">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                        Add to Cart
+                                    </button>
+                                    <button class="wood-texture text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </section>
+    </main>
+    <!-- @END_COMPONENT: HomePage -->
+
+    <!-- @COMPONENT: ProductsPage [products listing and filtering] -->
+    <section id="products" class="py-20 bg-warmWhite">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl font-display font-bold text-darkBrown mb-4">Our Products</h2>
+                <p class="text-xl text-gray-700">Explore our complete collection of premium Sagwan furniture</p>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+                <div class="flex flex-col lg:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Search furniture..." class="w-full pl-10 pr-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <select class="px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>All Categories</option>
+                            <option>Chairs</option>
+                            <option>Tables</option>
+                            <option>Wardrobes</option>
+                            <option>Beds</option>
+                        </select>
+                        <select class="px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>Price Range</option>
+                            <option>₹10,000 - ₹25,000</option>
+                            <option>₹25,000 - ₹50,000</option>
+                            <option>₹50,000+</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <!-- @MAP: products.map(product => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-beige rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                    <!-- Handcrafted wooden dining set -->
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Dining Set" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-4">
+                        <h3 class="font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Premium Dining Set</h3>
+                        <p class="text-sm text-gray-600 mb-3" data-bind="product.description">6-seater dining table with chairs</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-primary" data-bind="product.price">₹89,999</span>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:toggleWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-beige rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                    <!-- Traditional wooden sofa set -->
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Sofa Set" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-4">
+                        <h3 class="font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Royal Sofa Set</h3>
+                        <p class="text-sm text-gray-600 mb-3" data-bind="product.description">3+2+1 seater with cushions</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-primary" data-bind="product.price">₹125,999</span>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:toggleWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-beige rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                    <!-- Elegant wooden bed frame -->
+                    <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Bed Frame" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-4">
+                        <h3 class="font-display font-semibold text-darkBrown mb-2" data-bind="product.name">King Size Bed</h3>
+                        <p class="text-sm text-gray-600 mb-3" data-bind="product.description">Carved headboard design</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-primary" data-bind="product.price">₹45,999</span>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:toggleWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-beige rounded-2xl overflow-hidden shadow-lg hover-lift group">
+                    <!-- Stylish wooden bookshelf -->
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Bookshelf" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-4">
+                        <h3 class="font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Heritage Bookshelf</h3>
+                        <p class="text-sm text-gray-600 mb-3" data-bind="product.description">5-tier storage solution</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-primary" data-bind="product.price">₹22,999</span>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:toggleWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ProductsPage -->
+
+    <!-- @COMPONENT: DealPage [₹1 deals with timer] -->
+    <section id="deal" class="py-20 bg-beige">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl font-display font-bold text-darkBrown mb-4">₹1 Flash Deals</h2>
+                <p class="text-xl text-gray-700">Limited time offers - Only 1 hour left!</p>
+                
+                <!-- Timer -->
+                <div class="flex justify-center space-x-4 mt-8">
+                    <div class="bg-white rounded-lg p-4 shadow-lg">
+                        <div class="text-2xl font-bold text-primary" data-bind="timer.hours">00</div>
+                        <div class="text-sm text-gray-600">Hours</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 shadow-lg">
+                        <div class="text-2xl font-bold text-primary" data-bind="timer.minutes">45</div>
+                        <div class="text-sm text-gray-600">Minutes</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 shadow-lg">
+                        <div class="text-2xl font-bold text-primary" data-bind="timer.seconds">32</div>
+                        <div class="text-sm text-gray-600">Seconds</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal Products -->
+            <!-- @MAP: dealProducts.map(product => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group relative">
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                        ₹1 DEAL
+                    </div>
+                    <!-- Vintage wooden side table -->
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Side Table Deal" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Vintage Side Table</h3>
+                        <p class="text-gray-600 mb-4" data-bind="product.description">Perfect for your living room</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl font-bold text-red-500">₹1</span>
+                                <span class="text-lg text-gray-500 line-through" data-bind="product.originalPrice">₹12,999</span>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span data-bind="product.stock">3</span> left
+                            </div>
+                        </div>
+                        <button class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-event="click:buyNow">
+                            Buy Now for ₹1
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group relative">
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                        ₹1 DEAL
+                    </div>
+                    <!-- Wooden decorative mirror -->
+                    <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Mirror Deal" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Decorative Mirror</h3>
+                        <p class="text-gray-600 mb-4" data-bind="product.description">Handcrafted frame design</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl font-bold text-red-500">₹1</span>
+                                <span class="text-lg text-gray-500 line-through" data-bind="product.originalPrice">₹8,999</span>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span data-bind="product.stock">1</span> left
+                            </div>
+                        </div>
+                        <button class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-event="click:buyNow">
+                            Buy Now for ₹1
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover-lift group relative">
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                        ₹1 DEAL
+                    </div>
+                    <!-- Wooden storage box -->
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" alt="Storage Box Deal" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-darkBrown mb-2" data-bind="product.name">Storage Chest</h3>
+                        <p class="text-gray-600 mb-4" data-bind="product.description">Multipurpose storage solution</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl font-bold text-red-500">₹1</span>
+                                <span class="text-lg text-gray-500 line-through" data-bind="product.originalPrice">₹15,999</span>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span data-bind="product.stock">5</span> left
+                            </div>
+                        </div>
+                        <button class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-event="click:buyNow">
+                            Buy Now for ₹1
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </section>
+    <!-- @END_COMPONENT: DealPage -->
+
+    <!-- @COMPONENT: AboutPage [company and wood information] -->
+    <section id="about" class="py-20 bg-warmWhite">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h2 class="text-4xl font-display font-bold text-darkBrown mb-6">The Heritage of Sagwan Wood</h2>
+                    <p class="text-lg text-gray-700 mb-6">
+                        For over three generations, we have been crafting premium furniture from the finest Sagwan (Teak) wood. 
+                        Our legacy began in 1965 when our founder discovered the exceptional qualities of this remarkable timber.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-8">
+                        Sagwan wood is renowned for its natural oils, exceptional durability, and beautiful grain patterns. 
+                        It's naturally resistant to insects, decay, and weather, making it the perfect choice for furniture 
+                        that lasts generations.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 wood-texture rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">100% Natural Sagwan Wood</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 wood-texture rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Handcrafted by Master Artisans</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 wood-texture rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Lifetime Warranty</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 wood-texture rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Sustainable Sourcing</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <!-- Craftsman working on wooden furniture -->
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" alt="Craftsman working on Sagwan furniture" class="rounded-2xl shadow-lg w-full">
+                </div>
+            </div>
+            
+            <!-- Advantages Section -->
+            <div class="mt-20">
+                <h3 class="text-3xl font-display font-bold text-darkBrown text-center mb-12">Why Choose Sagwan Wood?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 wood-texture rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-display font-semibold text-darkBrown mb-3">Durability</h4>
+                        <p class="text-gray-600">Natural oils make Sagwan wood resistant to insects, decay, and weather conditions.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 wood-texture rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-leaf text-white text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-display font-semibold text-darkBrown mb-3">Sustainability</h4>
+                        <p class="text-gray-600">We source our wood from responsibly managed forests with proper certifications.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 wood-texture rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-gem text-white text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-display font-semibold text-darkBrown mb-3">Beauty</h4>
+                        <p class="text-gray-600">Unique grain patterns and rich color that develops character over time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: AboutPage -->
+
+    <!-- @COMPONENT: ContactPage [contact info and inquiry form] -->
+    <section id="contact" class="py-20 bg-beige">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl font-display font-bold text-darkBrown mb-4">Get in Touch</h2>
+                <p class="text-xl text-gray-700">Visit our showroom or send us your requirements</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div class="fade-in">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-display font-semibold text-darkBrown mb-6">Visit Our Showroom</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-darkBrown">Address</h4>
+                                    <p class="text-gray-600">123 Furniture Street, Craftsman District<br>Mumbai, Maharashtra 400001</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-phone text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-darkBrown">Phone</h4>
+                                    <p class="text-gray-600">+91 98765 43210<br>+91 98765 43211</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-darkBrown">Email</h4>
+                                    <p class="text-gray-600">info@sagwanfurniture.com<br>orders@sagwanfurniture.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-darkBrown">Hours</h4>
+                                    <p class="text-gray-600">Mon - Sat: 10:00 AM - 8:00 PM<br>Sunday: 11:00 AM - 6:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Google Map Placeholder -->
+                        <div class="mt-8">
+                            <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-map text-gray-400 text-3xl mb-2"></i>
+                                    <p class="text-gray-500">Interactive Google Map</p>
+                                    <p class="text-sm text-gray-400">123 Furniture Street, Mumbai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Inquiry Form -->
+                <div class="fade-in">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-display font-semibold text-darkBrown mb-6">Send us an Inquiry</h3>
+                        
+                        <form class="space-y-6" data-implementation="Contact form submission">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-darkBrown mb-2">First Name</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-darkBrown mb-2">Last Name</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-darkBrown mb-2">Email Address</label>
+                                <input type="email" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-darkBrown mb-2">Phone Number</label>
+                                <input type="tel" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-darkBrown mb-2">Inquiry Type</label>
+                                <select class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option>Product Inquiry</option>
+                                    <option>Custom Order</option>
+                                    <option>Bulk Order</option>
+                                    <option>General Question</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-darkBrown mb-2">Message</label>
+                                <textarea rows="4" class="w-full px-4 py-3 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Tell us about your requirements..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full wood-texture text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity" data-event="click:submitInquiry">
+                                Send Inquiry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ContactPage -->
+
+    <!-- @COMPONENT: CartModal [shopping cart sidebar] -->
+    <div id="cartModal" class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-display font-semibold text-darkBrown">Shopping Cart</h3>
+                <button class="text-gray-500 hover:text-darkBrown" data-event="click:closeCart">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- @MAP: cartItems.map(item => ( -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4 bg-beige rounded-lg p-4">
+                        <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80" alt="Cart Item" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-darkBrown" data-bind="item.name">Royal Dining Chair</h4>
+                            <p class="text-sm text-gray-600" data-bind="item.price">₹15,999</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300" data-event="click:decreaseQuantity">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="text-sm font-medium" data-bind="item.quantity">1</span>
+                                <button class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300" data-event="click:increaseQuantity">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="text-red-500 hover:text-red-600" data-event="click:removeFromCart">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 bg-beige rounded-lg p-4">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80" alt="Cart Item" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-darkBrown" data-bind="item.name">Artisan Coffee Table</h4>
+                            <p class="text-sm text-gray-600" data-bind="item.price">₹25,999</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300" data-event="click:decreaseQuantity">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="text-sm font-medium" data-bind="item.quantity">1</span>
+                                <button class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300" data-event="click:increaseQuantity">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="text-red-500 hover:text-red-600" data-event="click:removeFromCart">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+            
+            <div class="border-t p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-darkBrown">Total:</span>
+                    <span class="text-xl font-bold text-primary" data-bind="cart.total">₹41,998</span>
+                </div>
+                <button class="w-full wood-texture text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity mb-3" data-event="click:initiateCheckout">
+                    Checkout with Razorpay
+                </button>
+                <button class="w-full border border-primary text-primary py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors" data-event="click:continueShopping">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: CartModal -->
+
+    <!-- @COMPONENT: WishlistModal [saved products sidebar] -->
+    <div id="wishlistModal" class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-display font-semibold text-darkBrown">Wishlist</h3>
+                <button class="text-gray-500 hover:text-darkBrown" data-event="click:closeWishlist">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- @MAP: wishlistItems.map(item => ( -->
+                <div class="space-y-4">
+                    <div class="bg-beige rounded-lg p-4">
+                        <div class="flex items-center space-x-4">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80" alt="Wishlist Item" class="w-16 h-16 object-cover rounded-lg">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-darkBrown" data-bind="item.name">Heritage Wardrobe</h4>
+                                <p class="text-sm text-gray-600" data-bind="item.price">₹65,999</p>
+                            </div>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:removeFromWishlist">
+                                <i class="fas fa-heart text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:moveToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-beige rounded-lg p-4">
+                        <div class="flex items-center space-x-4">
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80" alt="Wishlist Item" class="w-16 h-16 object-cover rounded-lg">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-darkBrown" data-bind="item.name">Royal Sofa Set</h4>
+                                <p class="text-sm text-gray-600" data-bind="item.price">₹125,999</p>
+                            </div>
+                            <button class="text-red-500 hover:text-red-600" data-event="click:removeFromWishlist">
+                                <i class="fas fa-heart text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm hover:bg-opacity-90 transition-opacity" data-event="click:moveToCart">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 wood-texture text-white py-2 rounded-lg text-sm hover:opacity-90 transition-opacity" data-event="click:buyNow">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: WishlistModal -->
+
+    <!-- @COMPONENT: ProfileModal [user profile and orders] -->
+    <div id="profileModal" class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-display font-semibold text-darkBrown">Profile</h3>
+                <button class="text-gray-500 hover:text-darkBrown" data-event="click:closeProfile">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto">
+                <!-- Profile Info -->
+                <div class="p-6 border-b">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-16 h-16 wood-texture rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-darkBrown" data-bind="user.name">John Doe</h4>
+                            <p class="text-sm text-gray-600" data-bind="user.email">john.doe@email.com</p>
+                        </div>
+                    </div>
+                    <button class="w-full bg-gray-100 text-darkBrown py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                        Edit Profile
+                    </button>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="p-6">
+                    <h4 class="font-semibold text-darkBrown mb-4">Recent Orders</h4>
+                    <!-- @MAP: recentOrders.map(order => ( -->
+                    <div class="space-y-3">
+                        <div class="bg-beige rounded-lg p-3">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-sm font-medium text-darkBrown" data-bind="order.id">Order #12345</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded" data-bind="order.status">Delivered</span>
+                            </div>
+                            <p class="text-sm text-gray-600" data-bind="order.items">2 items - ₹41,998</p>
+                            <p class="text-xs text-gray-500" data-bind="order.date">March 15, 2024</p>
+                        </div>
+                        
+                        <div class="bg-beige rounded-lg p-3">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-sm font-medium text-darkBrown" data-bind="order.id">Order #12344</span>
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded" data-bind="order.status">In Transit</span>
+                            </div>
+                            <p class="text-sm text-gray-600" data-bind="order.items">1 item - ₹65,999</p>
+                            <p class="text-xs text-gray-500" data-bind="order.date">March 10, 2024</p>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                    
+                    <button class="w-full bg-primary text-white py-2 rounded-lg mt-4 hover:bg-opacity-90 transition-opacity">
+                        View All Orders
+                    </button>
+                </div>
+            </div>
+            
+            <div class="border-t p-6">
+                <button class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-event="click:logout">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: ProfileModal -->
+
+    <!-- @COMPONENT: ScrollToTop [floating action button] -->
+    <button id="scrollToTop" class="fixed bottom-8 right-8 w-12 h-12 wood-texture rounded-full shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-opacity z-40 hidden" data-event="click:scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <!-- @END_COMPONENT: ScrollToTop -->
+
+    <!-- Footer -->
+    <footer class="bg-darkBrown text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 wood-texture rounded-full flex items-center justify-center">
+                            <i class="fas fa-chair text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-display font-bold">Sagwan Furniture</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">Premium teak wood furniture crafted with love and tradition for over 50 years.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#products" class="text-gray-300 hover:text-white transition-colors">Products</a></li>
+                        <li><a href="#deal" class="text-gray-300 hover:text-white transition-colors">₹1 Deals</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Dining Tables</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Chairs</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Wardrobes</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Beds</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Sofas</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>123 Furniture Street, Mumbai</p>
+                        <p><i class="fas fa-phone mr-2"></i>+91 98765 43210</p>
+                        <p><i class="fas fa-envelope mr-2"></i>info@sagwanfurniture.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-600 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2024 Sagwan Furniture. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<!-- @END_COMPONENT: App -->
+
+<script>
+(function() {
+    // DOM elements
+    const authPage = document.getElementById('authPage');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const cartModal = document.getElementById('cartModal');
+    const wishlistModal = document.getElementById('wishlistModal');
+    const profileModal = document.getElementById('profileModal');
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+
+    // Authentication handlers
+    function showSignup() {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+    }
+
+    function showLogin() {
+        signupForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        // TODO: Implement authentication logic
+        authPage.style.display = 'none';
+    }
+
+    function handleSignup(e) {
+        e.preventDefault();
+        // TODO: Implement user registration logic
+        authPage.style.display = 'none';
+    }
+
+    // Modal handlers
+    function showCart() {
+        hideAllModals();
+        cartModal.classList.remove('hidden');
+        cartModal.querySelector('.transform').classList.remove('translate-x-full');
+    }
+
+    function showWishlist() {
+        hideAllModals();
+        wishlistModal.classList.remove('hidden');
+        wishlistModal.querySelector('.transform').classList.remove('translate-x-full');
+    }
+
+    function showProfile() {
+        hideAllModals();
+        profileModal.classList.remove('hidden');
+        profileModal.querySelector('.transform').classList.remove('translate-x-full');
+    }
+
+    function hideAllModals() {
+        [cartModal, wishlistModal, profileModal].forEach(modal => {
+            modal.querySelector('.transform').classList.add('translate-x-full');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        });
+    }
+
+    function closeCart() { hideAllModals(); }
+    function closeWishlist() { hideAllModals(); }
+    function closeProfile() { hideAllModals(); }
+
+    // Navigation and scrolling
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleScroll() {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.remove('hidden');
+        } else {
+            scrollToTopBtn.classList.add('hidden');
+        }
+    }
+
+    // Smooth navigation
+    function handleNavigation(e) {
+        if (e.target.classList.contains('nav-link')) {
+            e.preventDefault();
+            const targetId = e.target.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+
+    // Product interaction handlers
+    function addToCart(product) {
+        // TODO: Implement add to cart logic
+        console.log('Adding to cart:', product);
+    }
+
+    function buyNow(product) {
+        // TODO: Implement buy now with Razorpay integration
+        console.log('Buy now:', product);
+    }
+
+    function toggleWishlist(product) {
+        // TODO: Implement wishlist toggle logic
+        console.log('Toggle wishlist:', product);
+    }
+
+    function initiateCheckout() {
+        // TODO: Implement Razorpay checkout
+        console.log('Initiating Razorpay checkout');
+    }
+
+    // Timer for deals (demo)
+    function updateTimer() {
+        // TODO: Implement real countdown timer
+        const hours = Math.floor(Math.random() * 24).toString().padStart(2, '0');
+        const minutes = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+        const seconds = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+        
+        const timerElements = document.querySelectorAll('[data-bind^="timer."]');
+        timerElements.forEach(el => {
+            const bindType = el.getAttribute('data-bind');
+            if (bindType.includes('hours')) el.textContent = hours;
+            if (bindType.includes('minutes')) el.textContent = minutes;
+            if (bindType.includes('seconds')) el.textContent = seconds;
+        });
+    }
+
+    // Event listeners
+    document.addEventListener('click', function(e) {
+        // Authentication events
+        if (e.target.closest('[data-event="click:showSignup"]')) showSignup();
+        if (e.target.closest('[data-event="click:showLogin"]')) showLogin();
+        if (e.target.closest('[data-event="click:handleLogin"]')) handleLogin(e);
+        if (e.target.closest('[data-event="click:handleSignup"]')) handleSignup(e);
+
+        // Modal events
+        if (e.target.closest('[data-event="click:showCart"]')) showCart();
+        if (e.target.closest('[data-event="click:showWishlist"]')) showWishlist();
+        if (e.target.closest('[data-event="click:showProfile"]')) showProfile();
+        if (e.target.closest('[data-event="click:closeCart"]')) closeCart();
+        if (e.target.closest('[data-event="click:closeWishlist"]')) closeWishlist();
+        if (e.target.closest('[data-event="click:closeProfile"]')) closeProfile();
+
+        // Navigation and utility
+        if (e.target.closest('[data-event="click:scrollToTop"]')) scrollToTop();
+
+        // Product interactions
+        if (e.target.closest('[data-event="click:addToCart"]')) addToCart();
+        if (e.target.closest('[data-event="click:buyNow"]')) buyNow();
+        if (e.target.closest('[data-event="click:toggleWishlist"]')) toggleWishlist();
+        if (e.target.closest('[data-event="click:initiateCheckout"]')) initiateCheckout();
+    });
+
+    document.addEventListener('click', handleNavigation);
+    window.addEventListener('scroll', handleScroll);
+
+    // Initialize timer update
+    setInterval(updateTimer, 1000);
+
+    // Initialize fade-in animations
+    function initAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .hover-lift').forEach(el => {
+            observer.observe(el);
+        });
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+        initAnimations();
+        updateTimer();
+    });
+})();
+</script>
+
+</body>
+</html>
