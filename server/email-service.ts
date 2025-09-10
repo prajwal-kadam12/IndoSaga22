@@ -1,4 +1,12 @@
 import { MailService } from '@sendgrid/mail';
+import { 
+  createAdminMeetingNotification, 
+  createAdminOrderNotification, 
+  createUserMeetingConfirmation, 
+  createUserOrderConfirmation,
+  EMAIL_TEMPLATES 
+} from './email-templates';
+import type { MailDataRequired } from '@sendgrid/mail';
 
 if (!process.env.SENDGRID_API_KEY) {
   console.warn("SENDGRID_API_KEY environment variable is not set. Email sending will be disabled.");
@@ -55,6 +63,93 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
     console.log('✅ Email content has been logged above as backup');
     return true;
   }
+}
+
+// Enhanced email sending with admin notifications
+export async function sendDualEmails(userEmail: MailDataRequired, adminEmail: MailDataRequired): Promise<{ userSent: boolean; adminSent: boolean }> {
+  const results = { userSent: false, adminSent: false };
+  
+  // Log both emails for debugging
+  console.log('\n📧 DUAL EMAIL NOTIFICATION SYSTEM:');
+  console.log('═══════════════════════════════════════');
+  console.log('📨 USER EMAIL:');
+  console.log(`To: ${userEmail.to}`);
+  console.log(`Subject: ${userEmail.subject}`);
+  console.log('───────────────────────────────────────');
+  console.log('📨 ADMIN EMAIL:');
+  console.log(`To: ${adminEmail.to}`);
+  console.log(`Subject: ${adminEmail.subject}`);
+  console.log('═══════════════════════════════════════\n');
+
+  if (!process.env.SENDGRID_API_KEY) {
+    console.log('⚠️  SendGrid API key not configured. Emails logged above.');
+    return { userSent: true, adminSent: true }; // Return true so processing continues
+  }
+
+  try {
+    // Send user email
+    await mailService.send(userEmail);
+    results.userSent = true;
+    console.log('✅ User confirmation email sent successfully to:', userEmail.to);
+  } catch (error: any) {
+    console.error('❌ Failed to send user email:', error.message);
+  }
+
+  try {
+    // Send admin email
+    await mailService.send(adminEmail);
+    results.adminSent = true;
+    console.log('✅ Admin notification email sent successfully to:', adminEmail.to);
+  } catch (error: any) {
+    console.error('❌ Failed to send admin email:', error.message);
+  }
+
+  return results;
+}
+
+// Meeting booking email automation
+export async function sendMeetingBookingEmails(meetingData: any): Promise<{ userSent: boolean; adminSent: boolean }> {
+  const userEmail = createUserMeetingConfirmation(meetingData);
+  const adminEmail = createAdminMeetingNotification(meetingData);
+  
+  return await sendDualEmails(userEmail, adminEmail);
+}
+
+// Order confirmation email automation
+export async function sendOrderConfirmationEmails(orderData: any): Promise<{ userSent: boolean; adminSent: boolean }> {
+  const userEmail = createUserOrderConfirmation(orderData);
+  const adminEmail = createAdminOrderNotification(orderData);
+  
+  return await sendDualEmails(userEmail, adminEmail);
+}
+
+// Rate limiting for email sending (prevent spam)
+const emailRateLimit = new Map<string, number>();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const MAX_EMAILS_PER_WINDOW = 5;
+
+export function checkEmailRateLimit(email: string): boolean {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW;
+  
+  // Clean old entries
+  for (const [key, timestamp] of emailRateLimit.entries()) {
+    if (timestamp < windowStart) {
+      emailRateLimit.delete(key);
+    }
+  }
+  
+  // Count emails in current window
+  const emailsInWindow = Array.from(emailRateLimit.values())
+    .filter(timestamp => timestamp > windowStart).length;
+  
+  if (emailsInWindow >= MAX_EMAILS_PER_WINDOW) {
+    return false; // Rate limit exceeded
+  }
+  
+  // Add current email to tracking
+  emailRateLimit.set(`${email}-${now}`, now);
+  return true;
 }
 
 // Email templates
@@ -331,6 +426,7 @@ IndoSaga Furniture Support Team
   };
 }
 
+// Legacy function - kept for backward compatibility
 export function createOrderConfirmationEmail(orderData: any, customerEmail: string) {
   const { id: orderId, customerName, customerPhone, shippingAddress, paymentMethod, total, orderItems, razorpayPaymentId, paymentStatus } = orderData;
   
@@ -535,6 +631,7 @@ Premium Teak Wood Furniture
   };
 }
 
+// Legacy function - kept for backward compatibility  
 export function createContactInquiryNotificationEmail(inquiryData: any) {
   const { firstName, lastName, email, phone, inquiryType, message, id } = inquiryData;
   

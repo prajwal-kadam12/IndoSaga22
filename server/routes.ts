@@ -855,6 +855,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
+      // Check email rate limiting
+      const { checkEmailRateLimit } = await import("./email-service");
+      if (!checkEmailRateLimit(customerEmail)) {
+        return res.status(429).json({ 
+          message: 'Too many email requests. Please wait a moment before trying again.' 
+        });
+      }
       const appointmentId = `APT-${Date.now()}`;
       
       // In a real implementation, this would save to database
@@ -874,18 +881,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log('Appointment booked:', appointment);
 
-      // Send confirmation email
+      // Send dual emails (user confirmation + admin notification)
       try {
-        const emailParams = createAppointmentConfirmationEmail(appointment);
-        const emailSent = await sendEmail(emailParams);
+        const { sendMeetingBookingEmails } = await import("./email-service");
+        const emailResults = await sendMeetingBookingEmails(appointment);
         
-        if (emailSent) {
-          console.log('Appointment confirmation email sent to:', customerEmail);
+        if (emailResults.userSent && emailResults.adminSent) {
+          console.log('✅ Both meeting emails sent successfully');
+        } else if (emailResults.userSent) {
+          console.log('⚠️  User email sent, admin email failed');
+        } else if (emailResults.adminSent) {
+          console.log('⚠️  Admin email sent, user email failed');
         } else {
-          console.log('Failed to send appointment confirmation email');
+          console.log('❌ Both meeting emails failed to send');
         }
       } catch (emailError) {
-        console.error('Error sending appointment confirmation email:', emailError);
+        console.error('Error sending meeting booking emails:', emailError);
         // Don't fail the whole request if email fails
       }
 
@@ -999,6 +1010,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "User not found" });
       }
 
+      // Check email rate limiting
+      const { checkEmailRateLimit } = await import("./email-service");
+      if (!checkEmailRateLimit(dbUser.email)) {
+        return res.status(429).json({ 
+          message: 'Too many email requests. Please wait a moment before trying again.' 
+        });
+      }
       // Extract order items from request body
       const { orderItems: orderItemsData, ...orderData } = req.body;
       
@@ -1021,24 +1039,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Clear the user's cart after successful order creation
       await storage.clearCart(dbUser.id);
 
-      // Send order confirmation email
+      // Send dual emails (user confirmation + admin notification)
       try {
-        const { createOrderConfirmationEmail, sendEmail } = await import("./email-service");
+        const { sendOrderConfirmationEmails } = await import("./email-service");
         
         // Get complete order with items for email
         const completeOrder = await storage.getOrder(order.id);
         
-        const emailData = createOrderConfirmationEmail(completeOrder, dbUser.email);
-        const emailSent = await sendEmail(emailData);
+        const emailResults = await sendOrderConfirmationEmails(completeOrder);
         
-        if (emailSent) {
-          console.log(`✅ Order confirmation email processed successfully for order ${order.id}`);
-          console.log(`📧 Customer ${dbUser.email} should check their email and console logs above for order details`);
+        if (emailResults.userSent && emailResults.adminSent) {
+          console.log(`✅ Both order emails sent successfully for order ${order.id}`);
+        } else if (emailResults.userSent) {
+          console.log(`⚠️  User email sent, admin email failed for order ${order.id}`);
+        } else if (emailResults.adminSent) {
+          console.log(`⚠️  Admin email sent, user email failed for order ${order.id}`);
         } else {
-          console.log(`⚠️  Order confirmation email logged to console for order ${order.id}`);
+          console.log(`❌ Both order emails failed for order ${order.id}`);
         }
       } catch (emailError) {
-        console.error("Error sending order confirmation email:", emailError);
+        console.error("Error sending order confirmation emails:", emailError);
         // Don't fail the order creation if email fails
       }
       
@@ -1070,6 +1090,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
+      // Check email rate limiting
+      const emailToCheck = customerEmail || user?.email;
+      if (emailToCheck) {
+        const { checkEmailRateLimit } = await import("./email-service");
+        if (!checkEmailRateLimit(emailToCheck)) {
+          return res.status(429).json({ 
+            message: 'Too many email requests. Please wait a moment before trying again.' 
+          });
+        }
+      }
+      
       // Create the main order with or without user association
       const orderToCreate = insertOrderSchema.parse({ 
         ...orderData, 
@@ -1095,9 +1126,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.clearCart(userId);
       }
 
-      // Send order confirmation email
+      // Send dual emails (user confirmation + admin notification)
       try {
-        const { createOrderConfirmationEmail, sendEmail } = await import("./email-service");
+        const { sendOrderConfirmationEmails } = await import("./email-service");
         
         // Get complete order with items for email
         const completeOrder = await storage.getOrder(order.id);
@@ -1106,20 +1137,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const emailAddress = customerEmail || user?.email;
         
         if (emailAddress) {
-          const emailData = createOrderConfirmationEmail(completeOrder, emailAddress);
-          const emailSent = await sendEmail(emailData);
+          const emailResults = await sendOrderConfirmationEmails(completeOrder);
           
-          if (emailSent) {
-            console.log(`✅ Order confirmation email processed successfully for order ${order.id}`);
-            console.log(`📧 Customer ${emailAddress} should check their email and console logs above for order details`);
+          if (emailResults.userSent && emailResults.adminSent) {
+            console.log(`✅ Both order emails sent successfully for order ${order.id}`);
+          } else if (emailResults.userSent) {
+            console.log(`⚠️  User email sent, admin email failed for order ${order.id}`);
+          } else if (emailResults.adminSent) {
+            console.log(`⚠️  Admin email sent, user email failed for order ${order.id}`);
           } else {
-            console.log(`⚠️  Order confirmation email logged to console for order ${order.id}`);
+            console.log(`❌ Both order emails failed for order ${order.id}`);
           }
         } else {
-          console.log(`No email address available for order confirmation ${order.id}`);
+          console.log(`⚠️  No email address available for order confirmation ${order.id}`);
         }
       } catch (emailError) {
-        console.error("Error sending order confirmation email:", emailError);
+        console.error("Error sending order confirmation emails:", emailError);
         // Don't fail the order creation if email fails
       }
       
@@ -1368,6 +1401,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to update product question" });
     }
   });
+
+  // Email testing endpoint (development only)
+  if (process.env.NODE_ENV === 'development') {
+    app.post('/api/test-emails', async (req, res) => {
+      try {
+        const { type, data } = req.body;
+        
+        if (type === 'meeting') {
+          const { sendMeetingBookingEmails } = await import("./email-service");
+          const results = await sendMeetingBookingEmails(data);
+          res.json({ success: true, results });
+        } else if (type === 'order') {
+          const { sendOrderConfirmationEmails } = await import("./email-service");
+          const results = await sendOrderConfirmationEmails(data);
+          res.json({ success: true, results });
+        } else {
+          res.status(400).json({ message: 'Invalid test type' });
+        }
+      } catch (error) {
+        console.error('Email test error:', error);
+        res.status(500).json({ message: 'Email test failed' });
+      }
+    });
+  }
 
   const httpServer = createServer(app);
   return httpServer;

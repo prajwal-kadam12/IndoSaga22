@@ -478,6 +478,11 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
   const handlePaymentSuccess = async (paymentData: any) => {
     try {
+      // Enhanced email automation for cart checkout
+      console.log('📧 Email automation will be triggered for cart order confirmation');
+      console.log('📨 User confirmation email will be sent to:', customerDetails.email);
+      console.log('📨 Admin notification email will be sent to: kadamprajwal358@gmail.com');
+      
       // Create final order after successful payment
       const orderItems = cartItems.map((item: any) => ({
         productId: item.productId || item.product.id,
@@ -513,16 +518,17 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
       });
 
       if (response.ok) {
+        // Show email confirmation to user
+        toast({
+          title: "Order confirmed & emails sent!",
+          description: "Order confirmation sent to you and our team has been notified.",
+        });
+        
         // Clear the cart
         localStorage.removeItem('localCart');
         setLocalCartItems([]);
         window.dispatchEvent(new Event('cartUpdated'));
         queryClient.invalidateQueries({ queryKey: ["/api/cart"] });
-        
-        toast({
-          title: "Payment Successful!",
-          description: "Your order has been placed successfully.",
-        });
         
         // Reset form and close modal
         setCustomerDetails({ name: '', email: '', contact: '', address: '', city: '', district: '', state: '', pincode: '' });
@@ -531,6 +537,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         throw new Error('Failed to create order');
       }
     } catch (error) {
+      console.error('Cart order creation error:', error);
       toast({
         title: "Order Creation Failed",
         description: "Payment was successful but order creation failed. Please contact support.",

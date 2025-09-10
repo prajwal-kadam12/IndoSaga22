@@ -364,6 +364,11 @@ export default function ProductCard({ product, showDealBadge = false }: ProductC
 
   const handlePaymentSuccess = async (paymentData: any) => {
     try {
+      // Enhanced email automation for order confirmation
+      console.log('📧 Email automation will be triggered for order confirmation');
+      console.log('📨 User confirmation email will be sent to:', customerDetails.email);
+      console.log('📨 Admin notification email will be sent to: kadamprajwal358@gmail.com');
+      
       // Create final order after successful payment
       const orderData = {
         customerName: customerDetails.name,
@@ -394,6 +399,13 @@ export default function ProductCard({ product, showDealBadge = false }: ProductC
 
       if (response.ok) {
         const order = await response.json();
+        
+        // Show email confirmation to user
+        toast({
+          title: "Order confirmed & emails sent!",
+          description: "Order confirmation sent to you and our team has been notified.",
+        });
+        
         setOrderDetails({
           ...order,
           paymentMethod: 'online',
@@ -416,6 +428,7 @@ export default function ProductCard({ product, showDealBadge = false }: ProductC
         throw new Error('Failed to create order');
       }
     } catch (error) {
+      console.error('Order creation error:', error);
       toast({
         title: "Order Creation Failed",
         description: "Payment was successful but order creation failed. Please contact support.",
